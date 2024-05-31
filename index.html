@@ -78,6 +78,30 @@
             border-radius: 5px;
             padding: 5px;
         }
+
+        .status-container {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .status-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .status-step span {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .status-step.active span {
+            background-color: #007BFF;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +161,34 @@
             <div id="wire-instructions">
                 <!-- Wire instructions will be displayed here -->
             </div>
-            <button onclick="confirmTransaction()">Finish</button>
+            <button onclick="printWireInstructions()">Print</button>
+            <button onclick="nextPage()">Next</button>
+        </div>
+
+        <div id="status-page" class="page">
+            <h1>Order Status</h1>
+            <div class="status-container">
+                <div class="status-step active">
+                    <span></span>
+                    <p>Order Created</p>
+                </div>
+                <div class="status-step">
+                    <span></span>
+                    <p>Order Received</p>
+                </div>
+                <div class="status-step">
+                    <span></span>
+                    <p>Order Processed</p>
+                </div>
+                <div class="status-step">
+                    <span></span>
+                    <p>Order Successful</p>
+                </div>
+                <div class="status-step">
+                    <span></span>
+                    <p>Bitcoin Sent</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -146,6 +197,7 @@
         const pages = document.querySelectorAll('.page');
         const amountInput = document.getElementById('amount');
         const totalAmountSpan = document.getElementById('total-amount');
+        let referenceNumber;
 
         function nextPage() {
             if (currentPage < pages.length - 1) {
@@ -154,7 +206,7 @@
                 pages[currentPage].classList.add('visible');
             }
 
-            if (currentPage === pages.length - 1) {
+            if (currentPage === pages.length - 2) {
                 generateWireInstructions();
             }
         }
@@ -183,6 +235,7 @@
         }
 
         function generateWireInstructions() {
+            referenceNumber = generateReferenceNumber();
             const instructions = `
                 <p>Bank Name: Navy Federal Credit Union</p>
                 <p>Account Type: Business Checking</p>
@@ -190,8 +243,14 @@
                 <p>Routing Number: 256074974</p>
                 <p>Bank Address: 820 Follin Lane, Vienna, Va. 22180</p>
                 <p>Account Name: JBL CONSTRUCTION SERVICES</p>
+                <p><strong>Reference Number: ${referenceNumber}</strong></p>
+                <p>Please include the reference number in the notes when making the wire transfer.</p>
             `;
             document.getElementById('wire-instructions').innerHTML = instructions;
+        }
+
+        function generateReferenceNumber() {
+            return 'REF-' + Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
         }
 
         function showTransactionDetails() {
@@ -221,8 +280,13 @@
             }
         }
 
-        function confirmTransaction() {
-            alert('Transaction confirmed!');
+        function printWireInstructions() {
+            const printContents = document.getElementById('wire-instructions').innerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
