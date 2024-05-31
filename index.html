@@ -4,16 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Bitcoin</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.visible {
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="text"], input[type="email"], input[type="file"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div id="welcome-page" class="page">
+        <div id="welcome-page" class="page visible">
             <h1>Welcome to Bitcoin Purchase</h1>
             <button onclick="nextPage()">Next</button>
         </div>
 
-        <div id="kyc-page" class="page hidden">
+        <div id="kyc-page" class="page">
             <h1>KYC Information</h1>
             <form id="kyc-form">
                 <label for="name">Name:</label>
@@ -31,28 +80,28 @@
                 <label for="id">Upload Valid ID:</label>
                 <input type="file" id="id" name="id" required><br>
 
-                <button type="button" onclick="nextPage()">Next</button>
+                <button type="button" onclick="validateKYCForm()">Next</button>
             </form>
         </div>
 
-        <div id="wallet-page" class="page hidden">
+        <div id="wallet-page" class="page">
             <h1>Recipient Wallet Address</h1>
             <label for="wallet">Wallet Address:</label>
             <input type="text" id="wallet" name="wallet" required><br>
-            <button onclick="nextPage()">Next</button>
+            <button onclick="validateWalletForm()">Next</button>
         </div>
 
-        <div id="wire-page" class="page hidden">
+        <div id="wire-page" class="page">
             <h1>Wire Instructions</h1>
             <div id="wire-instructions">
                 <!-- Wire instructions will be generated here -->
             </div>
             <label for="payment-proof">Upload Payment Proof:</label>
             <input type="file" id="payment-proof" name="payment-proof" required><br>
-            <button onclick="nextPage()">Submit</button>
+            <button onclick="validateWireForm()">Submit</button>
         </div>
 
-        <div id="confirm-page" class="page hidden">
+        <div id="confirm-page" class="page">
             <h1>Confirm Transaction</h1>
             <div id="transaction-details">
                 <!-- Transaction details will be shown here -->
@@ -64,6 +113,93 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                pages[currentPage].classList.remove('visible');
+                currentPage++;
+                pages[currentPage].classList.add('visible');
+            }
+
+            if (currentPage === pages.length - 1) {
+                generateWireInstructions();
+                showTransactionDetails();
+            }
+        }
+
+        function validateKYCForm() {
+            const form = document.getElementById('kyc-form');
+            if (form.checkValidity()) {
+                nextPage();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function validateWalletForm() {
+            const walletInput = document.getElementById('wallet');
+            if (walletInput.checkValidity()) {
+                nextPage();
+            } else {
+                walletInput.reportValidity();
+            }
+        }
+
+        function validateWireForm() {
+            const paymentProofInput = document.getElementById('payment-proof');
+            if (paymentProofInput.checkValidity()) {
+                nextPage();
+            } else {
+                paymentProofInput.reportValidity();
+            }
+        }
+
+        function generateWireInstructions() {
+            const instructions = `
+                <p>Send 100,000 USD to the following bank account:</p>
+                <p>Account Number: ${Math.floor(Math.random() * 1000000000)}</p>
+                <p>Bank: Example Bank</p>
+                <p>SWIFT: EXAMPBANK</p>
+            `;
+            document.getElementById('wire-instructions').innerHTML = instructions;
+        }
+
+        function showTransactionDetails() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const wallet = document.getElementById('wallet').value;
+
+            const details = `
+                <p>Name: ${name}</p>
+                <p>Address: ${address}</p>
+                <p>Email: ${email}</p>
+                <p>Phone: ${phone}</p>
+                <p>Wallet Address: ${wallet}</p>
+            `;
+            document.getElementById('transaction-details').innerHTML = details;
+        }
+
+        function updateAmount() {
+            const amountInput = document.getElementById('amount');
+            const amount = parseInt(amountInput.value);
+            if (amount % 100000 !== 0) {
+                alert('Amount must be in increments of 100,000 USD');
+                amountInput.value = Math.floor(amount / 100000) * 100000;
+            }
+        }
+
+        function confirmTransaction() {
+            alert('Transaction confirmed!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            pages[currentPage].classList.add('visible');
+        });
+    </script>
 </body>
 </html>
