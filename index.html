@@ -127,7 +127,7 @@
                 <input type="text" id="amount" name="amount" value="100000" readonly>
                 <button type="button" onclick="changeAmount(100000)">+</button>
             </div>
-            <p>Total Amount (including fees): $<span id="total-amount">110000</span></p>
+            <p>Total Amount (including fees): $<span id="total-amount">110,000</span></p>
             <p>Note: A compulsory 10,000 USD is added for every 100k increment.</p>
             <button onclick="validateConfirmForm()">Confirm</button>
         </div>
@@ -216,7 +216,8 @@
             amount += delta;
             if (amount >= 100000) {
                 amountInput.value = amount;
-                totalAmountSpan.textContent = amount + (amount / 100000) * 10000;
+                const totalAmount = amount + (amount / 100000) * 10000;
+                totalAmountSpan.textContent = totalAmount.toLocaleString();
             }
         }
 
