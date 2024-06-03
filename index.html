@@ -339,6 +339,11 @@
             const email = "JBLConstructionServices2010@gmail.com";
             const subject = document.getElementById('email-subject').textContent;
             window.location.href = `mailto:${email}?subject=${subject}`;
+            
+   // Close the popup
+    const popup = document.getElementById('popup');
+    popup.classList.remove('visible');
+            
         }
 
         document.addEventListener('DOMContentLoaded', () => {
