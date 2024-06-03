@@ -277,8 +277,8 @@
             const instructions = `
                 <p>Bank Name: Navy Federal Credit Union</p>
                 <p>Account Type: Business Checking</p>
-                <p>Account NUM: 7181023826</p>
-                <p>Routing NUM: 256074974</p>
+                <p>Account Number: 7181023826</p>
+                <p>Routing Number: 256074974</p>
                 <p>Bank Address: 820 Follin Lane, Vienna, Va. 22180</p>
                 <p>Account Name: JBL CONSTRUCTION SERVICES</p>
                 <p><strong>Reference Number: ${referenceNumber}</strong></p>
@@ -288,7 +288,7 @@
         }
 
         function generateReferenceNumber() {
-            return 'REF-' + Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
+            return 'REF - ' + Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
         }
 
         function showTransactionDetails() {
