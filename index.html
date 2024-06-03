@@ -102,6 +102,28 @@
         .status-step.active span {
             background-color: #007BFF;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .popup button {
+            margin-top: 10px;
+        }
+
+        .popup.visible {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -199,6 +221,13 @@
             </div>
             <button onclick="wireSent()">Wire Sent</button>
         </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <p>Email us and attach the evidence of payment.</p>
+        <p>Email to: JBLConstructionServices2010@gmail.com</p>
+        <p>Email subject: <span id="email-subject"></span></p>
+        <button onclick="closePopup()">Close</button>
     </div>
 
     <script>
@@ -300,7 +329,15 @@
         }
 
         function wireSent() {
-            alert("Wire sent notification received. We will process your order shortly.");
+            const popup = document.getElementById('popup');
+            const emailSubject = document.getElementById('email-subject');
+            emailSubject.textContent = referenceNumber;
+            popup.classList.add('visible');
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.remove('visible');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
