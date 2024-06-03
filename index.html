@@ -47,11 +47,12 @@
             background-color: #0056b3;
         }
 
-     input[type="text"], input[type="email"], input[type="file"], select, input[type="tel"] {
-            width: calc(100% - 22px); /* Adjusted width to match other inputs */
+    input[type="text"], input[type="email"], input[type="file"], select {
+            width: 100%;
             padding: 8px;
             margin: 5px 0;
             box-sizing: border-box;
+        }
         }
 
         /* Added style for phone number label */
@@ -130,7 +131,7 @@
 
                <!-- Removed spinner input field for phone number -->
                 <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" required><br>
+                <input type="text" id="phone" name="phone" required><br>
 
                 <label for="id">Upload Valid ID (Image/PDF only):</label>
                 <input type="file" id="id" name="id" accept="image/*,application/pdf" required><br>
