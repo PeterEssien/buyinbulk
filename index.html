@@ -227,7 +227,7 @@
         <p>Email us and attach the evidence of payment.</p>
         <p>Email to: JBLConstructionServices2010@gmail.com</p>
         <p>Email subject: <span id="email-subject"></span></p>
-        <button onclick="closePopup()">Close</button>
+        <button onclick="openEmail()">Open Mail</button>
     </div>
 
     <script>
@@ -335,9 +335,10 @@
             popup.classList.add('visible');
         }
 
-        function closePopup() {
-            const popup = document.getElementById('popup');
-            popup.classList.remove('visible');
+        function openEmail() {
+            const email = "JBLConstructionServices2010@gmail.com";
+            const subject = document.getElementById('email-subject').textContent;
+            window.location.href = `mailto:${email}?subject=${subject}`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
